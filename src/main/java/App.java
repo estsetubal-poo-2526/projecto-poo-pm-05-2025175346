@@ -11,8 +11,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import javafx.scene.control.TextField;
 import javafx.util.Duration;
+
+import java.util.Collection;
 
 public class appStart extends Application {
 
