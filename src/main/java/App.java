@@ -66,7 +66,6 @@ public class GestorJogo extends Application {
 
     //Scene do jogo
     private Scene scene = new Scene(pane, WIDTH, HEIGHT, Color.BLACK);
-    private Scene cenaMenu;
 
     //Stage da aplicação
     private Stage primaryStage;
@@ -103,8 +102,7 @@ public class GestorJogo extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gameObjects.add(nave);
 
-        Scene menu1 = menu1();
-        primaryStage.setScene(menu1);
+        menu1();
         primaryStage.getIcons().add(icon);
         primaryStage.fullScreenProperty();
         primaryStage.setResizable(false);
@@ -194,7 +192,7 @@ public class GestorJogo extends Application {
 
     /*Segundo passo, criar uma cena para colocar no nosso palco, definir largura, altura, e um tipo de layout para utilizar*/
 
-    public Scene menu1() {
+    public void menu1() {
         /* Definição de um titulo para o Menu */
         Label tituloMenu = new Label("Space Invadares Desevolucion");
         tituloMenu.setStyle("-fx-text-fill: #00ffcc;" +
@@ -221,42 +219,64 @@ public class GestorJogo extends Application {
         Button btnEndless = new Button("EndLess");
 
         /* Definição do tamanho dos nossos botões */
-        btnFacil.setPrefWidth(150); btnFacil.setPrefHeight(50);
-        btnMedio.setPrefWidth(150); btnMedio.setPrefHeight(50);
-        btnEndless.setPrefWidth(150); btnEndless.setPrefHeight(50);
+        btnFacil.setPrefWidth(150);
+        btnFacil.setPrefHeight(50);
+        btnMedio.setPrefWidth(150);
+        btnMedio.setPrefHeight(50);
+        btnEndless.setPrefWidth(150);
+        btnEndless.setPrefHeight(50);
 
         /* Animação dos botões */
         ScaleTransition aumentarF = new ScaleTransition(Duration.millis(150), btnFacil);
-        aumentarF.setToX(1.15); aumentarF.setToY(1.15);
+        aumentarF.setToX(1.15);
+        aumentarF.setToY(1.15);
 
         ScaleTransition diminuirF = new ScaleTransition(Duration.millis(150), btnFacil);
-        diminuirF.setToX(1); diminuirF.setToY(1);
+        diminuirF.setToX(1);
+        diminuirF.setToY(1);
 
         ScaleTransition aumentarM = new ScaleTransition(Duration.millis(150), btnMedio);
-        aumentarM.setToX(1.15); aumentarM.setToY(1.15);
+        aumentarM.setToX(1.15);
+        aumentarM.setToY(1.15);
 
         ScaleTransition diminuirM = new ScaleTransition(Duration.millis(150), btnMedio);
-        diminuirM.setToX(1); diminuirM.setToY(1);
+        diminuirM.setToX(1);
+        diminuirM.setToY(1);
 
         ScaleTransition aumentarE = new ScaleTransition(Duration.millis(150), btnEndless);
-        aumentarE.setToX(1.15); aumentarE.setToY(1.15);
+        aumentarE.setToX(1.15);
+        aumentarE.setToY(1.15);
 
         ScaleTransition diminuirE = new ScaleTransition(Duration.millis(150), btnEndless);
-        diminuirE.setToX(1.00); diminuirE.setToY(1.00);
+        diminuirE.setToX(1.00);
+        diminuirE.setToY(1.00);
 
-        btnFacil.setOnMouseEntered(event -> { diminuirF.stop(); aumentarF.play(); });
-        btnFacil.setOnMouseExited(event -> { aumentarF.stop(); diminuirF.play(); });
-
-        btnMedio.setOnMouseEntered(event -> { diminuirM.stop(); aumentarM.play(); });
-        btnMedio.setOnMouseExited(event -> { aumentarM.stop(); diminuirM.play(); });
-
-        btnEndless.setOnMouseEntered(event -> { diminuirE.stop(); aumentarE.play(); });
-        btnEndless.setOnMouseExited(event -> { aumentarE.stop(); diminuirE.play(); });
-
-        // TODO
-        btnFacil.setOnAction(event -> {
+        btnFacil.setOnMouseEntered(event -> {
+            diminuirF.stop();
+            aumentarF.play();
         });
-        btnEndless.setOnAction(event -> startGame());
+        btnFacil.setOnMouseExited(event -> {
+            aumentarF.stop();
+            diminuirF.play();
+        });
+
+        btnMedio.setOnMouseEntered(event -> {
+            diminuirM.stop();
+            aumentarM.play();
+        });
+        btnMedio.setOnMouseExited(event -> {
+            aumentarM.stop();
+            diminuirM.play();
+        });
+
+        btnEndless.setOnMouseEntered(event -> {
+            diminuirE.stop();
+            aumentarE.play();
+        });
+        btnEndless.setOnMouseExited(event -> {
+            aumentarE.stop();
+            diminuirE.play();
+        });
 
         /* Adiciona os botões à Vertical Box */
         caixasOpcoes.getChildren().addAll(btnFacil, btnMedio, btnEndless);
@@ -339,8 +359,11 @@ public class GestorJogo extends Application {
         backGroundMenu.setCenter(caixasOpcoes);
 
         // Criação e retorno final da Scene (Válido para qualquer fluxo do IF)
-        cenaMenu = new Scene(backGroundMenu, 500, 800);
-        return cenaMenu;
+        Scene cenaMenu = new Scene(backGroundMenu, 500, 800);
+
+        btnEndless.setOnAction(event -> startGame());
+
+        primaryStage.setScene(cenaMenu);
     }
 
     //Método que serve para tratar das colições entre as entidades móveis
@@ -370,13 +393,11 @@ public class GestorJogo extends Application {
                     } else {
                         comum.setDead(true);
                         liveLost.play();
-                        score += 10;
+                        score += 50;
                     }
                     scoreLabel.setText("Pontuação: " + score);
 
-                    if (score % 100 == 0) {
-                        //AlienComum.SPEED += 0.4;
-                    }
+
                 }
 
                 for (PowerUp powerUp : powerUps) {
@@ -501,6 +522,11 @@ public class GestorJogo extends Application {
 
         btnAgain.setOnAction(event -> restartGame());
         btnLeave.setOnAction(event -> System.exit(0));
+
+        btnAgain.setLayoutX(115);
+        btnAgain.setLayoutY(350);
+        btnLeave.setLayoutX(115);
+        btnLeave.setLayoutY(450);
 
         paneOver.getChildren().addAll(gameOverText, scoreText, btnAgain, btnLeave);
 
