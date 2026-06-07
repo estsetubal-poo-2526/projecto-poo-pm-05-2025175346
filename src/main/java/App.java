@@ -127,6 +127,8 @@ public class GestorJogo extends Application {
 
                 if (now - lastAlienSpawned > 1_000_000_000) {
                     spawnAlien();
+                    spawnAlienTanque();
+                    spawnAlienRapido();
                     lastAlienSpawned = now;
                 }
 
@@ -136,7 +138,7 @@ public class GestorJogo extends Application {
                 }
 
                 if (score >= 100 && score % 100 == 0) {
-                    boolean tanqueExists = false;
+                    tanqueExists = false;
                     for (EntidadeMovel obj : gameObjects) {
                         if (obj instanceof AlienTanque) {
                             tanqueExists = true;
@@ -147,7 +149,7 @@ public class GestorJogo extends Application {
                         spawnAlienTanque();
                     }
                 } else if (score >= 200 && score % 200 == 0) {
-                    boolean rapidoExists = false;
+                    rapidoExists = false;
                     for (EntidadeMovel obj : gameObjects) {
                         if (obj instanceof AlienRapido) {
                             rapidoExists = true;
@@ -542,6 +544,8 @@ public class GestorJogo extends Application {
      */
     private void jogadorComandos (Scene scene){
 
+        AudioClip pew = new AudioClip(new File("src/main/resources/projetil.mp3").toURI().toString());
+
         //Quando o jogador prime as teclas...
         scene.setOnKeyPressed(
                 event -> {
@@ -553,6 +557,7 @@ public class GestorJogo extends Application {
                             nave.setMoveRight(true);
                             break;
                         case SPACE:
+                            pew.play();
                             nave.shoot(newObjects);
                             break;
                     }
