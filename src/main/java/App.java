@@ -4,7 +4,6 @@ import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,14 +12,14 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import javafx.util.Duration;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -29,9 +28,6 @@ import java.util.List;
 import java.util.Random;
 
 public class GestorJogo extends Application {
-
-    public MediaPlayer menuMusic;
-    public MediaPlayer levelMusic;
 
     //Dimensões da Scene
     public static final int WIDTH = 350;
@@ -44,7 +40,6 @@ public class GestorJogo extends Application {
     //Pontuação
     private int score = 0;
     private final Label scoreLabel = new Label("Pontuação: " + score);
-    private int scoreLimit = -1;
 
     //Booleano que serve para indicar se o jogo deve reiniciar ou não
     private boolean reset = false;
@@ -55,12 +50,6 @@ public class GestorJogo extends Application {
     private boolean tanqueExists = false;
 
     private boolean rapidoExists = false;
-
-    private boolean facilDone = false;
-
-    private boolean difDone = false;
-
-    private String curLevel = "";
 
     //Booleano que serve para indicar se o jogo está a decorrer ou não
     private boolean gameRunning = false;
@@ -87,6 +76,7 @@ public class GestorJogo extends Application {
     @Override
     public void start(Stage primaryStage) {
         /*Primeiro passo criar um palco, isto é uma janela de exibição da nossa interface gráfica!*/
+
         this.primaryStage = primaryStage;
 
         Image icon = new Image("/spaceship.jpg");
@@ -113,20 +103,6 @@ public class GestorJogo extends Application {
         gameObjects.add(nave);
 
         menu1();
-
-        String menuFile = "src/main/resources/Menu.mp3";
-        Media menuMedia = new Media(new File(menuFile).toURI().toString());
-        menuMusic = new MediaPlayer(menuMedia);
-        menuMusic.setCycleCount(MediaPlayer.INDEFINITE);
-        menuMusic.play();
-
-        String levelFile = "src/main/resources/Level.mp3";
-        Media levelMedia = new Media(new File(levelFile).toURI().toString());
-        levelMusic = new MediaPlayer(levelMedia);
-        levelMusic.setCycleCount(MediaPlayer.INDEFINITE);
-
-        AudioClip w = new AudioClip(new File("src/main/resources/win.mp3").toURI().toString());
-
         primaryStage.getIcons().add(icon);
         primaryStage.fullScreenProperty();
         primaryStage.setResizable(false);
@@ -140,18 +116,6 @@ public class GestorJogo extends Application {
             @Override
             public void handle(long now) {
                 if (!gameRunning) return;
-
-                if (scoreLimit != -1 && score >= scoreLimit) {
-                    if (curLevel.equals("FACIL")) {
-                        facilDone = true;
-                    } else if (curLevel.equals("MEDIO")) {
-                        difDone = true;
-                    }
-
-                    w.play();
-                    voltarParaMenu();
-                    return;
-                }
 
                 if (reset) {
                     this.start();
@@ -232,7 +196,7 @@ public class GestorJogo extends Application {
 
     public void menu1() {
         /* Definição de um titulo para o Menu */
-        Label tituloMenu = new Label("Space Invaders: Evolution");
+        Label tituloMenu = new Label("Space Invadares Desevolucion");
         tituloMenu.setStyle("-fx-text-fill: #00ffcc;" +
                 " -fx-font-size: 24px;" +
                 " -fx-font-weight: bold;");
@@ -252,15 +216,15 @@ public class GestorJogo extends Application {
         caixasOpcoes.setMaxHeight(300); // Limitar a altura da minha Vertical Box
 
         /* Definição das nossas caixas de opções (Easy, Hard, EndLess) */
-        Button btnFacil = new Button(facilDone ? "✓ Fácil" : "Fácil");
-        Button btnDificil = new Button(difDone ? "✓ Difícil" : "Difícil");
-        Button btnEndless = new Button("Endless");
+        Button btnFacil = new Button("Fácil");
+        Button btnMedio = new Button("Médio");
+        Button btnEndless = new Button("EndLess");
 
         /* Definição do tamanho dos nossos botões */
         btnFacil.setPrefWidth(150);
         btnFacil.setPrefHeight(50);
-        btnDificil.setPrefWidth(150);
-        btnDificil.setPrefHeight(50);
+        btnMedio.setPrefWidth(150);
+        btnMedio.setPrefHeight(50);
         btnEndless.setPrefWidth(150);
         btnEndless.setPrefHeight(50);
 
@@ -273,11 +237,11 @@ public class GestorJogo extends Application {
         diminuirF.setToX(1);
         diminuirF.setToY(1);
 
-        ScaleTransition aumentarM = new ScaleTransition(Duration.millis(150), btnDificil);
+        ScaleTransition aumentarM = new ScaleTransition(Duration.millis(150), btnMedio);
         aumentarM.setToX(1.15);
         aumentarM.setToY(1.15);
 
-        ScaleTransition diminuirM = new ScaleTransition(Duration.millis(150), btnDificil);
+        ScaleTransition diminuirM = new ScaleTransition(Duration.millis(150), btnMedio);
         diminuirM.setToX(1);
         diminuirM.setToY(1);
 
@@ -298,11 +262,11 @@ public class GestorJogo extends Application {
             diminuirF.play();
         });
 
-        btnDificil.setOnMouseEntered(event -> {
+        btnMedio.setOnMouseEntered(event -> {
             diminuirM.stop();
             aumentarM.play();
         });
-        btnDificil.setOnMouseExited(event -> {
+        btnMedio.setOnMouseExited(event -> {
             aumentarM.stop();
             diminuirM.play();
         });
@@ -317,7 +281,7 @@ public class GestorJogo extends Application {
         });
 
         /* Adiciona os botões à Vertical Box */
-        caixasOpcoes.getChildren().addAll(btnFacil, btnDificil, btnEndless);
+        caixasOpcoes.getChildren().addAll(btnFacil, btnMedio, btnEndless);
 
         /* Centrar os nossos botões */
         caixasOpcoes.setAlignment(Pos.CENTER);
@@ -331,7 +295,7 @@ public class GestorJogo extends Application {
         );
 
 
-        btnDificil.setStyle("-fx-background-color: rgba(30, 20, 10, 0.6); " +   // Fundo laranja escuro semi-transparente
+        btnMedio.setStyle("-fx-background-color: rgba(30, 20, 10, 0.6); " +   // Fundo laranja escuro semi-transparente
                 "-fx-text-fill: #ff9900; " +                         // Texto laranja laser
                 "-fx-border-color: #ff9900; " +                      // Borda laranja laser
                 "-fx-border-width: 2px; " +
@@ -375,8 +339,8 @@ public class GestorJogo extends Application {
                     }
 
                     BackgroundPosition novaPosicao = new BackgroundPosition(
-                            Side.LEFT, 0, false,
-                            Side.TOP, deslocamentoY[0], false
+                            javafx.geometry.Side.LEFT, 0, false,
+                            javafx.geometry.Side.TOP, deslocamentoY[0], false
                     );
 
                     BackgroundImage configMovimento = new BackgroundImage(
@@ -399,21 +363,7 @@ public class GestorJogo extends Application {
         // Criação e retorno final da Scene (Válido para qualquer fluxo do IF)
         Scene cenaMenu = new Scene(backGroundMenu, 500, 800);
 
-        btnEndless.setOnAction(event -> {
-            startGame();
-        });
-        btnFacil.setOnAction(event -> {
-            scoreLimit = 5000;
-            curLevel = "FACIL";
-            showTempMessage("Chegue até aos\n5000 Pontos", 135, HEIGHT / 2, 2);
-            startGame();
-        });
-
-        btnDificil.setOnAction(event -> {
-            scoreLimit = 15000;
-            curLevel = "MEDIO";
-            startGame();
-        });
+        btnEndless.setOnAction(event -> startGame());
 
         primaryStage.setScene(cenaMenu);
     }
@@ -511,20 +461,20 @@ public class GestorJogo extends Application {
         gameOverText.setY(150);
 
         if (score < 0) score = 0;
-        Text scoreText = new Text("Pontuação: " + score);
+        Text scoreText = new Text("Your Score: " + score);
         scoreText.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
         scoreText.setFill(Color.WHITE);
         scoreText.setX((WIDTH - scoreText.getLayoutBounds().getWidth()) / 2);
         scoreText.setY(250);
 
-        Button btnAgain = new Button("Tente Outra Vez");
+        Button btnAgain = new Button("Try Again!");
         btnAgain.setStyle("-fx-background-color: red; " +
                 "-fx-text-fill: white; " +
                 "-fx-background-radius: 15px; " +
                 "-fx-font-weight: bold; " +
                 "-fx-font-size: 14px;");
 
-        Button btnLeave = new Button("Sair...");
+        Button btnLeave = new Button("Exit Game...");
         btnLeave.setStyle("-fx-background-color: Blue; " +
                 "-fx-text-fill: white; " +
                 "-fx-background-radius: 15px; " +
@@ -573,13 +523,12 @@ public class GestorJogo extends Application {
         });
 
         btnAgain.setOnAction(event -> restartGame());
-        btnLeave.setOnAction(event -> voltarParaMenu());
+        btnLeave.setOnAction(event -> System.exit(0));
 
         btnAgain.setLayoutX(115);
         btnAgain.setLayoutY(350);
         btnLeave.setLayoutX(115);
         btnLeave.setLayoutY(450);
-        levelMusic.stop();
 
         paneOver.getChildren().addAll(gameOverText, scoreText, btnAgain, btnLeave);
 
@@ -692,8 +641,6 @@ public class GestorJogo extends Application {
     //Método para iniciar o jogo
     private void startGame(){
         gameRunning = true;
-        menuMusic.stop();
-        levelMusic.play();
         primaryStage.setScene(scene);
     }
 
@@ -713,21 +660,6 @@ public class GestorJogo extends Application {
         gameObjects.add(nave);
         reset = true;
         gameRunning = true;
-        levelMusic.play();
         primaryStage.setScene(scene);
-    }
-    private void voltarParaMenu() {
-        gameRunning = false;
-        levelMusic.stop();
-
-        gameObjects.clear();
-        score = 0;
-        vidas = 3;
-        scoreLabel.setText("Pontuação: " + score);
-        vidasLabel.setText("Vidas: " + vidas);
-        gameObjects.add(nave);
-
-        menu1();
-        menuMusic.play();
     }
 }
