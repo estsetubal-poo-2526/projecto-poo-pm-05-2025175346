@@ -1,3 +1,5 @@
+package org.example;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -31,8 +33,7 @@ public class NaveJogador extends EntidadeMovel{
     //Construtor da NaveJogador
     public NaveJogador(double x, double y) {
         super(x, y, WIDTH, HEIGHT);
-        this.spaceship =
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("src/main/resources/spaceship.jpg")));
+        this.spaceship = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/spaceship.jpg")));
     }
 
     //Métodos abstratos da EntidadeMóvel
@@ -71,7 +72,8 @@ public class NaveJogador extends EntidadeMovel{
             x -= SPEED;
         }
 
-        if (moveRight && x + WIDTH / 2 + SPEED <= appStart.WIDTH) {
+        // CORRIGIDO: Mudado de appStart.WIDTH para GestorJogo.WIDTH
+        if (moveRight && x + WIDTH / 2 + SPEED <= GestorJogo.WIDTH) {
             x += SPEED;
         }
     }
