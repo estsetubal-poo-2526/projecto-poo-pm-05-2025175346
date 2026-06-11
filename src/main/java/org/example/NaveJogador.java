@@ -73,7 +73,7 @@ public class NaveJogador extends EntidadeMovel{
         }
 
         // CORRIGIDO: Mudado de appStart.WIDTH para GestorJogo.WIDTH
-        if (moveRight && x + WIDTH / 2 + SPEED <= GestorJogo.WIDTH) {
+        if (moveRight && x + WIDTH / 2 + SPEED <= App.WIDTH) {
             x += SPEED;
         }
     }
