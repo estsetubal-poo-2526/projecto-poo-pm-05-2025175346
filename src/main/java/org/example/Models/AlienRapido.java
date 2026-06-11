@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Models;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -6,30 +6,27 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
-public class AlienTanque extends AlienComum{
-    /*Representa um inimigo do tipo tanque (2 HP) */
+public class AlienRapido extends AlienComum{
+    /*Representa um inimigo do tipo rápido (velocidade incrementada)*/
 
-    //Número de vidas do alien
-    private int health = 2;
+    //Dimensões do alien
+    protected static final int WIDTH = 35;
+    protected static final int HEIGHT = 35;
 
-    //Dimensões do alien !!!É LIGEIRAMENTE MAIOR!!!
-    protected static final int WIDTH = 40;
-    protected static final int HEIGHT = 40;
-
-    //Velocidade do alien
-    public static double SPEED = 0.5;
+    //Velocidade do alien !!!A VELOCIDADE FOI INCREMENTADA!!!
+    public static double SPEED = 2;
 
     //Serve para indicar se o alien está "morto" ou não
     private boolean dead = false;
 
     //Imagem do powerup
-    private final Image alienTanque;
+    private final Image alienRapido;
 
     // Construtor do powerup
-    public AlienTanque(double x, double y) {
+    public AlienRapido(double x, double y) {
         super(x, y);
-        this.alienTanque =
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/alientanque.png")));
+        this.alienRapido =
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/alienrapido.png")));
     }
 
     //Métodos abstratos da EntidadeMóvel
@@ -46,11 +43,11 @@ public class AlienTanque extends AlienComum{
      */
     @Override
     public void render(GraphicsContext gc) {
-        if (alienTanque != null) { //Verifica se a imagem foi renderizada ou não
-            gc.drawImage(alienTanque, x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
+        if (alienRapido != null) { //Verifica se a imagem foi renderizada ou não
+            gc.drawImage(alienRapido, x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
         } else {
             //Caso a imagem não tenha sido renderizada...
-            gc.setFill(Color.DARKRED);
+            gc.setFill(Color.PALEVIOLETRED);
             gc.fillRect(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
         }
     }
@@ -87,12 +84,5 @@ public class AlienTanque extends AlienComum{
      */
     public void setDead(boolean dead) {
         this.dead = dead;
-    }
-
-    public void takeDamage() {
-        health--;
-        if (health <= 0) {
-            setDead(true);
-        }
     }
 }

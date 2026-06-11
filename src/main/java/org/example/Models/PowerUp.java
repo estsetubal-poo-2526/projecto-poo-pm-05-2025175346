@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Models;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -6,27 +6,27 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
-public class AlienRapido extends AlienComum{
-    /*Representa um inimigo do tipo rápido (velocidade incrementada)*/
+public class PowerUp extends EntidadeMovel {
+    /*Representa um objeto que pode beneficiar o jogador*/
 
-    //Dimensões do alien
-    protected static final int WIDTH = 35;
-    protected static final int HEIGHT = 35;
+    //Dimensões do powerup
+    public static final int WIDTH = 20;
+    public static final int HEIGHT = 20;
 
-    //Velocidade do alien !!!A VELOCIDADE FOI INCREMENTADA!!!
-    public static double SPEED = 2;
+    //Velocidade do powerup
+    private static final double SPEED = 2;
 
-    //Serve para indicar se o alien está "morto" ou não
+    //Serve para indicar se o powerup está "morto" ou não
     private boolean dead = false;
 
     //Imagem do powerup
-    private final Image alienRapido;
+    private final Image powerUp;
 
     // Construtor do powerup
-    public AlienRapido(double x, double y) {
-        super(x, y);
-        this.alienRapido =
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/alienrapido.png")));
+    public PowerUp(double x, double y) {
+        super(x, y, WIDTH, HEIGHT);
+        this.powerUp =
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/powerup.png")));
     }
 
     //Métodos abstratos da EntidadeMóvel
@@ -43,11 +43,17 @@ public class AlienRapido extends AlienComum{
      */
     @Override
     public void render(GraphicsContext gc) {
-        if (alienRapido != null) { //Verifica se a imagem foi renderizada ou não
-            gc.drawImage(alienRapido, x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
+        if (powerUp != null) { //Verifica se a imagem foi renderizada ou não
+            double scaledWidth = WIDTH * 2;
+            double scaledHeight = HEIGHT * 2;
+
+            double drawX = x - scaledWidth / 2;
+            double drawY = y - scaledHeight / 2;
+
+            gc.drawImage(powerUp, drawX, drawY, scaledWidth, scaledHeight);
         } else {
             //Caso a imagem não tenha sido renderizada...
-            gc.setFill(Color.PALEVIOLETRED);
+            gc.setFill(Color.GREEN);
             gc.fillRect(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
         }
     }

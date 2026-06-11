@@ -1,8 +1,9 @@
-package org.example;
+package org.example.Models;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import org.example.View.App;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class NaveJogador extends EntidadeMovel{
     //Construtor da NaveJogador
     public NaveJogador(double x, double y) {
         super(x, y, WIDTH, HEIGHT);
-        this.spaceship = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/spaceship.jpg")));
+        this.spaceship = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/spaceship.jpg")));
     }
 
     //Métodos abstratos da EntidadeMóvel

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Models;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -16,7 +16,7 @@ public class Projetil extends EntidadeMovel{
     //Serve para indicar se o projetil está "morto" ou não
     private boolean dead = false;
 
-    /** Construtor do org.example.Projetil
+    /** Construtor do org.example.Models.Projetil
      *
      *@param x posição x
      *@param y posição y

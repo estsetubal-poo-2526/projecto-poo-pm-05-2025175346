@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Models;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -6,27 +6,27 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
-public class PowerUp extends EntidadeMovel {
-    /*Representa um objeto que pode beneficiar o jogador*/
+public class AlienComum extends EntidadeMovel {
+    /*Representa um inimigo do tipo comum (velocidade normal + 1 HP) */
 
-    //Dimensões do powerup
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 20;
+    //Dimensões do alien
+    protected static final int WIDTH = 30;
+    protected static final int HEIGHT = 30;
 
-    //Velocidade do powerup
-    private static final double SPEED = 2;
+    //Velocidade do alien
+    public static double SPEED = 1;
 
-    //Serve para indicar se o powerup está "morto" ou não
+    //Serve para indicar se o alien está "morto" ou não
     private boolean dead = false;
 
     //Imagem do powerup
-    private final Image powerUp;
+    private final Image alienComum;
 
     // Construtor do powerup
-    public PowerUp(double x, double y) {
+    public AlienComum(double x, double y) {
         super(x, y, WIDTH, HEIGHT);
-        this.powerUp =
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/powerup.png")));
+        this.alienComum =
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/aliencomum.png")));
     }
 
     //Métodos abstratos da EntidadeMóvel
@@ -43,17 +43,11 @@ public class PowerUp extends EntidadeMovel {
      */
     @Override
     public void render(GraphicsContext gc) {
-        if (powerUp != null) { //Verifica se a imagem foi renderizada ou não
-            double scaledWidth = WIDTH * 2;
-            double scaledHeight = HEIGHT * 2;
-
-            double drawX = x - scaledWidth / 2;
-            double drawY = y - scaledHeight / 2;
-
-            gc.drawImage(powerUp, drawX, drawY, scaledWidth, scaledHeight);
+        if (alienComum != null) { //Verifica se a imagem foi renderizada ou não
+            gc.drawImage(alienComum, x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
         } else {
             //Caso a imagem não tenha sido renderizada...
-            gc.setFill(Color.GREEN);
+            gc.setFill(Color.RED);
             gc.fillRect(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
         }
     }
@@ -92,3 +86,4 @@ public class PowerUp extends EntidadeMovel {
         this.dead = dead;
     }
 }
+

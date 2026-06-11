@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Models;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -6,27 +6,30 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
-public class AlienComum extends EntidadeMovel{
-    /*Representa um inimigo do tipo comum (velocidade normal + 1 HP) */
+public class AlienTanque extends AlienComum{
+    /*Representa um inimigo do tipo tanque (2 HP) */
 
-    //Dimensões do alien
-    protected static final int WIDTH = 30;
-    protected static final int HEIGHT = 30;
+    //Número de vidas do alien
+    private int health = 2;
+
+    //Dimensões do alien !!!É LIGEIRAMENTE MAIOR!!!
+    protected static final int WIDTH = 40;
+    protected static final int HEIGHT = 40;
 
     //Velocidade do alien
-    public static double SPEED = 1;
+    public static double SPEED = 0.5;
 
     //Serve para indicar se o alien está "morto" ou não
     private boolean dead = false;
 
     //Imagem do powerup
-    private final Image alienComum;
+    private final Image alienTanque;
 
     // Construtor do powerup
-    public AlienComum(double x, double y) {
-        super(x, y, WIDTH, HEIGHT);
-        this.alienComum =
-                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/aliencomum.png")));
+    public AlienTanque(double x, double y) {
+        super(x, y);
+        this.alienTanque =
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Images/alientanque.png")));
     }
 
     //Métodos abstratos da EntidadeMóvel
@@ -43,11 +46,11 @@ public class AlienComum extends EntidadeMovel{
      */
     @Override
     public void render(GraphicsContext gc) {
-        if (alienComum != null) { //Verifica se a imagem foi renderizada ou não
-            gc.drawImage(alienComum, x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
+        if (alienTanque != null) { //Verifica se a imagem foi renderizada ou não
+            gc.drawImage(alienTanque, x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
         } else {
             //Caso a imagem não tenha sido renderizada...
-            gc.setFill(Color.RED);
+            gc.setFill(Color.DARKRED);
             gc.fillRect(x - WIDTH / 2, y - HEIGHT / 2, WIDTH, HEIGHT);
         }
     }
@@ -85,5 +88,11 @@ public class AlienComum extends EntidadeMovel{
     public void setDead(boolean dead) {
         this.dead = dead;
     }
-}
 
+    public void takeDamage() {
+        health--;
+        if (health <= 0) {
+            setDead(true);
+        }
+    }
+}

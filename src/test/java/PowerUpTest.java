@@ -1,4 +1,4 @@
-import org.example.PowerUp;
+import org.example.Models.PowerUp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

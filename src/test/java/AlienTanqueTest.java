@@ -1,4 +1,4 @@
-import org.example.AlienTanque;
+import org.example.Models.AlienTanque;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
