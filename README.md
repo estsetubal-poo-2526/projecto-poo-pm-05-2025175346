@@ -1,6 +1,6 @@
 O nosso projeto "Space Invaders: Evolution" foi desenvolvido no âmbito da Unidade Curricular de Programação Orientada por Objetos.
 
-Para iniciar o jogo é necessário executar a classe "Main", disponibilizada na pasta "view".
+Para iniciar o jogo é necessário executar a classe "Main", disponibilizada em projecto-poo-pm-05-2025175346/src/main/java/org/example/Main.java
 
 A diferenciação neste jogo é que inclui vários níveis, diferentes tipos de inimigos com comportamentos distintos e power-ups que caem aleatoriamente para obter mais pontos. E críamos um novo modo onde o jogador tenta sobreviver o máximo de 
 rondas posíveis.
